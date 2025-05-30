@@ -1,8 +1,10 @@
 package com.tilldawn.controller;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.tilldawn.Main;
 import com.tilldawn.model.Vector;
+import com.tilldawn.model.game.Bullet;
 import com.tilldawn.model.game.Game;
 import com.tilldawn.model.game.Player;
 import com.tilldawn.model.texture.Textures;
@@ -14,6 +16,7 @@ public class GameController {
     private final GameScreen screen;
 
     private final boolean[] keys = new boolean[256];
+    boolean mousePressed = false;
 
     public GameController(Game game, GameScreen screen) {
         this.game = game;
@@ -23,6 +26,9 @@ public class GameController {
     public void handleKeyDown(int keycode) {
         if (keycode < keys.length) {
             keys[keycode] = true;
+        }
+        if (keycode == Input.Keys.R) {
+            getPlayer().getWeapon().reload(game.timePassed);
         }
     }
 
@@ -34,7 +40,7 @@ public class GameController {
 
 
     public void render(SpriteBatch batch) {
-        game.getPlayer().render(batch);
+        game.render(batch);
 
         Vector position = screen.getMousePosition(game.getPlayer());
         batch.draw(Textures.AIM.getTexture(), (float) (position.x - Textures.AIM.getWidth() * 0.5), (float) (position.y - Textures.AIM.getHeight() * 0.5));
@@ -77,10 +83,14 @@ public class GameController {
         game.getPlayer().setSpeed(vector);
 
         game.update(delta);
-        game.getPlayer().update(delta);
 
         game.getPlayer().setFacingRight(screen.getMousePosition(game.getPlayer()).x >= game.getPlayer().getX());
 
+        boolean mousePressedNow = Gdx.input.isButtonPressed(Input.Buttons.LEFT);
+        if (mousePressedNow && !mousePressed) {
+            game.shoot(screen.getMousePosition(game.getPlayer()).subtract(game.getPlayer().getPos()).normalize());
+        }
+        mousePressed = mousePressedNow;
     }
 
     public Player getPlayer() {

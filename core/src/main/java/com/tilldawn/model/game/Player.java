@@ -120,37 +120,7 @@ public class Player {
     }
 
     public void renderWeapon(SpriteBatch batch, Vector direction) {
-        TextureRegion weapon = new TextureRegion(this.weapon.texture);
-        float angleDegrees = (float) Math.toDegrees(Math.atan2(direction.y, direction.x));
-        int weaponWidth = 50;
-        int weaponHeight = 35;
-        float radius = 35;
-
-        float angleRad = (float) Math.atan2(direction.y, direction.x);
-        float offsetX = (float) Math.cos(angleRad) * radius;
-        float offsetY = (float) Math.sin(angleRad) * radius;
-
-        float centerX = pos.x + width * 0.5f;
-        float centerY = pos.y + height * 0.5f;
-
-        float weaponX = centerX + offsetX - weaponWidth * 0.5f;
-        float weaponY = centerY + offsetY - weaponHeight * 0.5f;
-
-        if (direction.x < 0 && !weapon.isFlipY()) {
-            weapon.flip(false, true);
-        } else if (direction.x >= 0 && weapon.isFlipY()) {
-            weapon.flip(false, true);
-        }
-
-        batch.draw(
-            weapon,
-            weaponX, weaponY,
-            weaponWidth * 0.5f,
-            weaponHeight * 0.5f,
-            weaponWidth, weaponHeight,
-            1f, 1f,
-            angleDegrees
-        );
+        weapon.renderWeapon(batch, direction, this);
     }
 
     public Rectangle getBounds() {

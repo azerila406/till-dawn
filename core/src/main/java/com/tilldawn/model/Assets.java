@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.tilldawn.model.enemy.EnemyType;
 import com.tilldawn.model.game.State;
 import com.tilldawn.model.game.WeaponType;
 import com.tilldawn.model.sounds.GameSound;
@@ -31,6 +32,7 @@ public class Assets {
 
         WeaponType.queueAssets(manager);
         Textures.queueAssets(manager);
+        EnemyType.queueAssets(manager);
     }
 
     public static void finishLoading() {

@@ -7,7 +7,7 @@ import com.tilldawn.model.game.WeaponType;
 
 public enum Textures {
     AIM("aim.png", 32, 32),
-
+    BULLET("bullet.png", 8, 8),
     ;
 
     public final String path;

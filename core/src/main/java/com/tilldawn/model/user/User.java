@@ -33,5 +33,10 @@ public class User {
     public void increaseScore(int amount) {
         score += amount;
     }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
 }
 
