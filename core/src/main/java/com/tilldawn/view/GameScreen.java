@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
+import com.tilldawn.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix4;
@@ -23,6 +24,7 @@ import com.tilldawn.model.texture.Textures;
 public class GameScreen implements Screen {
     private final Main game;
     private final GameController controller;
+    private final MouseController mouseController;
 
     private SpriteBatch batch;
     private Stage hudStage;
@@ -38,6 +40,7 @@ public class GameScreen implements Screen {
         this.game = Main.getInstance();
         this.controller = new GameController(Main.getGame(), this);
         this.batch = new SpriteBatch();
+        this.mouseController = game.mouseController;
         setupHUD();
         setupInput();
     }
@@ -152,27 +155,16 @@ public class GameScreen implements Screen {
         }
     }
 
-    public Vector getMousePosition(Player player) {
-        float screenX = Gdx.input.getX();
-        float screenY = Gdx.input.getY();
-
-        float screenWidth = Gdx.graphics.getWidth();
-        float screenHeight = Gdx.graphics.getHeight();
-
-        screenY = screenHeight - screenY;
-
-        float playerCenterX = player.getX() + player.getWidth() * 0.5f;
-        float playerCenterY = player.getY() + player.getHeight() * 0.5f;
-
-        float worldX = playerCenterX - screenWidth * 0.5f + screenX;
-        float worldY = playerCenterY - screenHeight * 0.5f + screenY;
-
-        return new Vector(worldX, worldY);
+    public Vector getMousePosition() {
+        return mouseController.getMousePosition(controller.getPlayer());
     }
 
+    public void setMouse(Vector worldPos) {
+        mouseController.setMousePosition(worldPos, controller.getPlayer());
+    }
 
-
-    @Override public void resize(int width, int height) {
+    @Override
+    public void resize(int width, int height) {
         hudStage.getViewport().update(width, height, true);
     }
 

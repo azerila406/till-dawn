@@ -1,17 +1,18 @@
 package com.tilldawn.model.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import com.tilldawn.controller.GameController;
+import com.tilldawn.model.Ability.Ability;
 import com.tilldawn.model.Assets;
 import com.tilldawn.model.Vector;
 import com.tilldawn.model.texture.Heros;
-import com.tilldawn.model.texture.Textures;
 import com.tilldawn.model.user.User;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Player {
     private final User user;
@@ -26,7 +27,9 @@ public class Player {
     private State state = State.IDLE;
     private float stateTime = 0f;
     private Animation<TextureRegion> animation;
+    public final List<Ability> abilities = new ArrayList<>();
     private boolean facingRight;
+    private float speed;
 
 
     public void setHealth(int health) {
@@ -84,6 +87,7 @@ public class Player {
         weapon = new Weapon(weaponType);
         this.heroType = heroType;
         animation = Assets.getHeroAnimation(heroType, state, 0.1f);
+        this.speed = 100f;
     }
 
     public int getHealth() {
@@ -100,6 +104,7 @@ public class Player {
 
     public void update(float delta) {
         stateTime += delta;
+        abilities.removeIf(ability -> ability.isDead());
     }
 
     public void setState(State state) {
@@ -136,8 +141,7 @@ public class Player {
     }
 
     public void setSpeed(Vector direction) {
-        float speed = 100 * Gdx.graphics.getDeltaTime();
-        direction.normalizeTo(speed);
+        direction.normalizeTo(speed * Gdx.graphics.getDeltaTime());
 
         if (direction.length() <= 0.1f) {
             setState(State.IDLE);
@@ -153,5 +157,22 @@ public class Player {
 
     public boolean isFacingRight() {
         return facingRight;
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
+    }
+
+    public float getSpeed() {
+        return speed;
+    }
+
+    private float lastHit = -1;
+    public final static float BETWEEN_HIT = 5f;
+
+    public void damage(Game game, int damage) {
+        if (game.timePassed - lastHit <= BETWEEN_HIT) return;
+        lastHit = game.timePassed;
+        health -= damage;
     }
 }

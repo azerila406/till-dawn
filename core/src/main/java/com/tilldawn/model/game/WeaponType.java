@@ -7,9 +7,9 @@ import com.tilldawn.model.Assets;
 import java.awt.*;
 
 public enum WeaponType {
-    REVOLVER(20, 1, 1, 6, "revolver.png"),
-    SHOTGUN(10, 4, 1, 2, "revolver.png"), //TODO
-    SMG_DUAL(8, 1, 2, 24, "smg.png");
+    REVOLVER(20, 0, 1, 6, "revolver.png"),
+    SHOTGUN(10, 3, 1, 2, "revolver.png"), //TODO
+    SMG_DUAL(8, 0, 2, 24, "smg.png");
 
     public final int damage;
     public final int projectile;

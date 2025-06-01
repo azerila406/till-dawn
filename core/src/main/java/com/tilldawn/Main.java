@@ -6,10 +6,7 @@ import com.tilldawn.model.Assets;
 import com.tilldawn.model.language.Lang;
 import com.tilldawn.model.user.User;
 import com.tilldawn.model.user.UserRepository;
-import com.tilldawn.view.LoginScreen;
-import com.tilldawn.view.MainMenuScreen;
-import com.tilldawn.view.PreScreen;
-import com.tilldawn.view.RegisterScreen;
+import com.tilldawn.view.*;
 
 import java.lang.reflect.Array;
 import java.util.List;
@@ -19,9 +16,11 @@ public class Main extends Game {
     private static Main main;
     private User user = UserRepository.getInstance().getByUsername("GUEST");
     private com.tilldawn.model.game.Game game;
+    public final MouseController mouseController;
 
-    public Main() {
+    public Main(MouseController mouseController) {
         super();
+        this.mouseController = mouseController;
         main = this;
     }
 

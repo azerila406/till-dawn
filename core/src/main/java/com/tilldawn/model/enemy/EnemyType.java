@@ -11,7 +11,7 @@ import com.tilldawn.model.texture.Textures;
 public enum EnemyType {
     TREE(Integer.MAX_VALUE, "tree", 64, 64, 5),
     TENTACLE_MONSTER(25, "tentacle", 32, 32, 6),
-    EYEBAT(50, "eyebat", 32, 32, 0),
+    EYEBAT(50, "eye", 32, 32, 3),
     ELDER(400, "elder", 32, 32, 0),;
 
     public final int HP;

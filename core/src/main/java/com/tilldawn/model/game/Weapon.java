@@ -6,6 +6,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.tilldawn.model.Vector;
 import com.tilldawn.model.texture.Textures;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Weapon {
     private int ammo = 0;
     private int maxAmmo;
@@ -13,14 +16,17 @@ public class Weapon {
     private int projectile;
     public final Texture texture;
 
+    public int damage;
+
     private boolean isReloading = false;
     private float timeOfReload = 0.0f;
 
-    public Weapon(int maxAmmo, int reloadTime, int projectile, Texture texture) {
+    public Weapon(int maxAmmo, int reloadTime, int projectile, Texture texture, int damage) {
         this.maxAmmo = maxAmmo;
         this.reloadTime = reloadTime;
         this.projectile = projectile;
         this.texture = texture;
+        this.damage = damage;
     }
 
     public Weapon(WeaponType type) {
@@ -29,6 +35,7 @@ public class Weapon {
         reloadTime = type.timeReload;
         ammo = maxAmmo;
         texture = type.getTexture();
+        this.damage = type.damage;
     }
 
     public int getAmmo() {
@@ -81,12 +88,39 @@ public class Weapon {
         }
     }
 
-    public Bullet shoot(float time, Vector direction, Player player) {
+    private Vector rotateVector(Vector vec, float angle) {
+        float cos = (float) Math.cos(angle);
+        float sin = (float) Math.sin(angle);
+        float x = vec.x * cos - vec.y * sin;
+        float y = vec.x * sin + vec.y * cos;
+        return new Vector(x, y);
+    }
+
+    public static final int SHOOT_SPEED  = 15;
+    public static final float ANGLE_OFFSET = (float) Math.toRadians(10);
+    public List<Bullet> shoot(float time, Vector direction, Player player) {
         updateReload(time);
         if (isReloading || ammo == 0) return null;
         Vector bulletVector = getBulletSpawnPosition(direction, player);
         --ammo;
-        return new Bullet(1, bulletVector, direction, 35);
+
+        List<Bullet> bullets = new ArrayList<>();
+        bullets.add(new Bullet(damage, bulletVector, direction, SHOOT_SPEED));
+
+
+
+        System.err.println("PROJECTILE: " + projectile);
+        for (int i = 1; i <= projectile; i += 1) {
+            float angle = ANGLE_OFFSET * i;
+
+            Vector rotatedLeft = rotateVector(direction, -angle);
+            Vector rotatedRight = rotateVector(direction, angle);
+
+            bullets.add(new Bullet(damage, bulletVector, rotatedLeft, SHOOT_SPEED));
+            bullets.add(new Bullet(damage, bulletVector, rotatedRight, SHOOT_SPEED));
+        }
+
+        return bullets;
     }
 
     public void renderWeapon(SpriteBatch batch, Vector direction, Player player) {
@@ -136,4 +170,12 @@ public class Weapon {
         return new Vector(bulletX, bulletY);
     }
 
+
+    public int getDamage() {
+        return damage;
+    }
+
+    public void setDamage(int damage) {
+        this.damage = damage;
+    }
 }

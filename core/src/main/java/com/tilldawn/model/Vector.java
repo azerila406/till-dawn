@@ -1,5 +1,7 @@
 package com.tilldawn.model;
 
+import java.util.List;
+
 public class Vector {
     public float x;
     public float y;
@@ -84,5 +86,31 @@ public class Vector {
     @Override
     public String toString() {
         return "Vector(" + x + ", " + y + ")";
+    }
+
+    public float length(Vector u) {
+        return copy().subtract(u).length();
+    }
+
+    public Vector findNearest(List<Vector> candidates) {
+        Vector best = candidates.get(0);
+
+        for (Vector v : candidates) {
+            float d = length(v);
+            if (d < length(best))
+                best = v;
+        }
+
+        return best;
+    }
+
+    public Vector rotate(float angle) {
+        float cos = (float) Math.cos(angle);
+        float sin = (float) Math.sin(angle);
+        float newX = this.x * cos - this.y * sin;
+        float newY = this.x * sin + this.y * cos;
+        this.x = newX;
+        this.y = newY;
+        return this;
     }
 }

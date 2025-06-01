@@ -9,17 +9,18 @@ import com.tilldawn.model.Vector;
 import com.tilldawn.model.texture.Textures;
 
 public class Bullet {
-    private int damage;
+    public final int damage;
     private Vector pos;
     private Vector direction;
     private float speed;
     private float width = 8, height = 8;
     public final Texture texture = Textures.BULLET.getTexture();
+    public boolean isDead = false;
 
     public Bullet(int damage, Vector pos, Vector dir, float speed) {
         this.damage = damage;
-        this.pos = pos;
-        this.direction = dir.normalizeTo(speed);
+        this.pos = pos.copy();
+        this.direction = dir.copy().normalizeTo(speed);
         this.speed = speed;
     }
 
