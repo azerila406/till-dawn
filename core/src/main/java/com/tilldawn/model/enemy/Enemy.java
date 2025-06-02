@@ -4,16 +4,31 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.tilldawn.model.Vector;
 import com.tilldawn.model.game.Game;
 
-public abstract class Enemy {
+import java.io.Serializable;
+
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "type"
+)
+@JsonSubTypes({
+    @JsonSubTypes.Type(value = Tree.class, name = "tree"),
+    @JsonSubTypes.Type(value = TentacleMonster.class, name = "ten"),
+    @JsonSubTypes.Type(value = EyeMonster.class, name = "eye")
+})
+
+public abstract class Enemy implements Serializable {
     private int health;
     private Vector pos;
-    public final float width, height;
-    public final EnemyType enemyType;
+    public float width, height;
+    public EnemyType enemyType;
     public final static float DIST = 1000;
-    private final Animation<TextureRegion> animation;
+    private transient Animation<TextureRegion> animation;
     private boolean flip = false;
     public boolean isDead = false;
 
@@ -24,6 +39,11 @@ public abstract class Enemy {
         animation = enemyType.createAnimation(1f);
         this.width = enemyType.width;
         this.height = enemyType.height;
+        System.err.println("CREATED ENEMY WITH HP: " + this.health);
+    }
+
+    public void reload() {
+        animation = enemyType.createAnimation(1f);
     }
 
     public int getHealth() {
@@ -43,7 +63,9 @@ public abstract class Enemy {
     }
 
     public void update(float delta, Game game) {
-        Vector direction = game.getPlayer().getPos().copy().subtract(pos).normalize();
+        Vector direction = game.getPlayer().getPos().copy().subtract(pos);
+        if (direction.length() < 6f) return;
+        direction.normalize();
         pos.add(direction.scale(getSpeed(game.getTotalTime(), game.timePassed) * delta));
         flip = direction.x < 0;
     }
@@ -67,13 +89,17 @@ public abstract class Enemy {
 
     public void damage(Game game, int damage) {
         if (isDead) return;
+
         health -= damage;
+        System.err.println("DAMAGE: " + damage);
+        System.err.println("HP: " + health);
         if (health <= 0) {
             isDead = true;
-            game.points.add(new Point(pos));
+            game.points.add(new Point(pos, enemyType.award));
+            game.getPlayer().handleKilling();
         }
         Vector direction = game.getPlayer().getPos().copy().subtract(pos).normalize();
-        direction = direction.scale(-0.5f * getSpeed(game.getTotalTime(), game.timePassed)).rotate(0.001f);
+        direction = direction.scale(-0.5f * enemyType.getRawSpeed()).rotate(0.001f);
         pos.add(direction);
         flip = direction.x < 0;
     }

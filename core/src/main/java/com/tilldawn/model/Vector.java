@@ -1,8 +1,9 @@
 package com.tilldawn.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Vector {
+public class Vector implements Serializable {
     public float x;
     public float y;
 

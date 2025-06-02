@@ -5,8 +5,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.tilldawn.model.Assets;
 
 import java.awt.*;
+import java.io.Serializable;
 
-public enum WeaponType {
+public enum WeaponType implements Serializable {
     REVOLVER(20, 0, 1, 6, "revolver.png"),
     SHOTGUN(10, 3, 1, 2, "revolver.png"), //TODO
     SMG_DUAL(8, 0, 2, 24, "smg.png");

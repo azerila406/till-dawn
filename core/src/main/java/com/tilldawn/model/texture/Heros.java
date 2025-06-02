@@ -1,6 +1,7 @@
 package com.tilldawn.model.texture;
 
 
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -8,22 +9,27 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.tilldawn.model.game.State;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.tilldawn.model.game.State.WALK;
 
-public enum Heros {
-    DASHER("Dasher", 6, 4, 0),
-    DIAMOND("Diamond", 6, 4, 8),
-    LILITH("Lilith", 6, 4, 8),
-    SCARLET("Scarlet", 6, 4, 0),
-    SHANA("Shana", 6, 4, 6);
+public enum Heros implements Serializable {
+    DASHER(130, 100, "Dasher", 6, 4, 0),
+    DIAMOND(50, 200, "Diamond", 6, 4, 8),
+    LILITH(10, 500, "Lilith", 6, 4, 8),
+    SCARLET(200, 70, "Scarlet", 6, 4, 0),
+    SHANA(300, 50, "Shana", 6, 4, 6);
 
-    private final String folderName;
-    private final int idleCount, runCount, walkCount;
+    public final int HP;
+    public final int speed;
+    public final String folderName;
+    public final int idleCount, runCount, walkCount;
 
-    Heros(String folderName, int idleCount, int runCount, int walkCount) {
+    Heros(int hp, int speed, String folderName, int idleCount, int runCount, int walkCount) {
+        HP = hp;
+        this.speed = speed;
         this.folderName = folderName;
         this.idleCount = idleCount;
         this.runCount = runCount;

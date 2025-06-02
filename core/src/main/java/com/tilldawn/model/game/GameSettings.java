@@ -2,18 +2,46 @@ package com.tilldawn.model.game;
 
 import com.tilldawn.model.texture.Heros;
 
-public class GameSettings {
-    public final float totalTime;
-    public final WeaponType weaponType;
-    public final Heros heroType;
+import java.io.Serializable;
 
-    public GameSettings(int totalTime, WeaponType type, Heros heroType) {
+public class GameSettings implements Serializable {
+    public float totalTime;
+    public WeaponType weaponType;
+    public Heros heroType;
+    public boolean autoReload = false;
+
+    public GameSettings() {
+    }
+
+    public float getTotalTime() {
+        return totalTime;
+    }
+
+    public void setTotalTime(int totalTime) {
         this.totalTime = totalTime * 60;
-        this.weaponType = type;
+    }
+
+    public WeaponType getWeaponType() {
+        return weaponType;
+    }
+
+    public void setWeaponType(WeaponType weaponType) {
+        this.weaponType = weaponType;
+    }
+
+    public Heros getHeroType() {
+        return heroType;
+    }
+
+    public void setHeroType(Heros heroType) {
         this.heroType = heroType;
     }
 
-    public static GameSettings createDefault() {
-        return new GameSettings(120, WeaponType.REVOLVER, Heros.DASHER);
+    public boolean isAutoReload() {
+        return autoReload;
+    }
+
+    public void setAutoReload(boolean autoReload) {
+        this.autoReload = autoReload;
     }
 }

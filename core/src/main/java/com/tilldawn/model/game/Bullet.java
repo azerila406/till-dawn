@@ -8,20 +8,28 @@ import com.tilldawn.model.Assets;
 import com.tilldawn.model.Vector;
 import com.tilldawn.model.texture.Textures;
 
-public class Bullet {
-    public final int damage;
+import java.io.Serializable;
+
+public class Bullet implements Serializable {
+    public int damage;
     private Vector pos;
     private Vector direction;
     private float speed;
     private float width = 8, height = 8;
-    public final Texture texture = Textures.BULLET.getTexture();
+    private transient Texture texture = Textures.BULLET.getTexture();
     public boolean isDead = false;
+    private BulletType bulletType;
 
-    public Bullet(int damage, Vector pos, Vector dir, float speed) {
+    public BulletType getBulletType() {
+        return bulletType;
+    }
+
+    public Bullet(int damage, Vector pos, Vector dir, float speed, BulletType bulletType) {
         this.damage = damage;
         this.pos = pos.copy();
         this.direction = dir.copy().normalizeTo(speed);
         this.speed = speed;
+        this.bulletType = bulletType;
     }
 
     public float getX() {
@@ -43,5 +51,9 @@ public class Bullet {
 
     public void render(SpriteBatch batch) {
         batch.draw(texture, pos.x, pos.y, width, height);
+    }
+
+    public void reload() {
+        texture = Textures.BULLET.getTexture();
     }
 }

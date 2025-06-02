@@ -2,6 +2,7 @@ package com.tilldawn.model.enemy;
 
 import com.tilldawn.model.Vector;
 import com.tilldawn.model.game.Bullet;
+import com.tilldawn.model.game.BulletType;
 import com.tilldawn.model.game.Game;
 import com.tilldawn.model.game.Player;
 
@@ -30,14 +31,13 @@ public class EyeMonster extends Enemy {
         List<Bullet> bullets = game.getBullet();
         Vector vector = game.getPlayer().getPos().copy().subtract(this.getPos());
         if (vector.length() < DIST) {
-            bullets.add(new Bullet(5, this.getPos(), vector.normalize(), SPEED));
+            bullets.add(new Bullet(5, this.getPos(), vector.normalize(), SPEED, BulletType.ENEMY));
+            lastShot = game.timePassed;
         }
-        lastShot = game.timePassed;
     }
 
     public static boolean shouldSpawn(float timePassed, float allTime) {
         if (timePassed * 4 < allTime) return false;
-        System.err.println();
         if (timePassed - lastSpawnTime > 10) {
             numOfSpawns = 0;
             return true;

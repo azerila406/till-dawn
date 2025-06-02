@@ -6,21 +6,22 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.tilldawn.model.Assets;
-import com.tilldawn.model.texture.Textures;
 
 public enum EnemyType {
-    TREE(Integer.MAX_VALUE, "tree", 64, 64, 5),
-    TENTACLE_MONSTER(25, "tentacle", 32, 32, 6),
-    EYEBAT(50, "eye", 32, 32, 3),
-    ELDER(400, "elder", 32, 32, 0),;
+    TREE(Integer.MAX_VALUE, 0, "tree", 64, 64, 5),
+    TENTACLE_MONSTER(25, 5, "tentacle", 32, 32, 6),
+    EYEBAT(50, 10, "eye", 32, 32, 3),
+    ELDER(400, 100, "elder", 128, 128, 5),;
 
     public final int HP;
+    public final int award;
     public final String file;
     public final float width, height;
     public final int numberOfFrames;
 
-    EnemyType(int HP, String file, float width, float height, int numberOfFrames) {
+    EnemyType(int HP, int award, String file, float width, float height, int numberOfFrames) {
         this.HP = HP;
+        this.award = award;
         this.file = file;
         this.width = width;
         this.height = height;
@@ -39,8 +40,16 @@ public enum EnemyType {
     public float getSpeed(float totalGame, float passed) {
         return 50 * switch(this) {
             case TREE -> 0;
-            case TENTACLE_MONSTER, EYEBAT -> 1;
-            case ELDER ->  (float)(Math.sin(passed / totalGame * Math.PI * 2) * 0.5f + 0.5f);
+            case TENTACLE_MONSTER -> 1;
+            case EYEBAT -> 2;
+            case ELDER -> (float)((Math.sin(passed * 5) > 0.95) ? 40f : 0.3f);
+        };
+    }
+
+    public float getRawSpeed() {
+        return switch (this) {
+            case TREE -> 0;
+            default -> 1;
         };
     }
 

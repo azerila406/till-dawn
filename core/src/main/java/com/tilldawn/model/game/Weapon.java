@@ -6,28 +6,22 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.tilldawn.model.Vector;
 import com.tilldawn.model.texture.Textures;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Weapon {
+public class Weapon implements Serializable {
     private int ammo = 0;
     private int maxAmmo;
     private int reloadTime;
     private int projectile;
-    public final Texture texture;
+    public transient Texture texture;
+    public final WeaponType weaponType;
 
     public int damage;
 
     private boolean isReloading = false;
     private float timeOfReload = 0.0f;
-
-    public Weapon(int maxAmmo, int reloadTime, int projectile, Texture texture, int damage) {
-        this.maxAmmo = maxAmmo;
-        this.reloadTime = reloadTime;
-        this.projectile = projectile;
-        this.texture = texture;
-        this.damage = damage;
-    }
 
     public Weapon(WeaponType type) {
         maxAmmo = type.ammoMax;
@@ -36,6 +30,11 @@ public class Weapon {
         ammo = maxAmmo;
         texture = type.getTexture();
         this.damage = type.damage;
+        this.weaponType = type;
+    }
+
+    public void reload() {
+        texture = weaponType.getTexture();
     }
 
     public int getAmmo() {
@@ -105,19 +104,16 @@ public class Weapon {
         --ammo;
 
         List<Bullet> bullets = new ArrayList<>();
-        bullets.add(new Bullet(damage, bulletVector, direction, SHOOT_SPEED));
+        bullets.add(new Bullet(damage, bulletVector, direction, SHOOT_SPEED, BulletType.PLAYER));
 
-
-
-        System.err.println("PROJECTILE: " + projectile);
         for (int i = 1; i <= projectile; i += 1) {
             float angle = ANGLE_OFFSET * i;
 
             Vector rotatedLeft = rotateVector(direction, -angle);
             Vector rotatedRight = rotateVector(direction, angle);
 
-            bullets.add(new Bullet(damage, bulletVector, rotatedLeft, SHOOT_SPEED));
-            bullets.add(new Bullet(damage, bulletVector, rotatedRight, SHOOT_SPEED));
+            bullets.add(new Bullet(damage, bulletVector, rotatedLeft, SHOOT_SPEED, BulletType.PLAYER));
+            bullets.add(new Bullet(damage, bulletVector, rotatedRight, SHOOT_SPEED, BulletType.PLAYER));
         }
 
         return bullets;

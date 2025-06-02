@@ -1,6 +1,8 @@
 package com.tilldawn.model.game;
 
-public enum State {
+import java.io.Serializable;
+
+public enum State implements Serializable {
     IDLE("idle", "Idle"),
     RUN("run", "Run"),
     WALK("walk", "Walk");

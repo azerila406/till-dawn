@@ -9,28 +9,33 @@ import com.tilldawn.model.Ability.Ability;
 import com.tilldawn.model.Assets;
 import com.tilldawn.model.Vector;
 import com.tilldawn.model.texture.Heros;
+import com.tilldawn.model.texture.Textures;
 import com.tilldawn.model.user.User;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Player {
-    private final User user;
+public class Player implements Serializable {
+    private transient User user;
     private int health;
     private Vector pos;
     private float width = 32, height = 32;
     private int XP = 0;
-    private int level = 0;
+    private int level = 1;
     private Weapon weapon;
     private int kills = 0;
-    private final Heros heroType;
-    private State state = State.IDLE;
+    public final Heros heroType;
+    private transient State state = State.IDLE;
     private float stateTime = 0f;
-    private Animation<TextureRegion> animation;
+    private transient Animation<TextureRegion> animation;
     public final List<Ability> abilities = new ArrayList<>();
     private boolean facingRight;
     private float speed;
 
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public void setHealth(int health) {
         this.health = health;
@@ -64,16 +69,27 @@ public class Player {
         return XP;
     }
 
-    public void setXP(int XP) {
-        this.XP = XP;
+    public int getMaxXP() {
+        return getLevel() * 20;
+    }
+
+    public boolean addXP(int xp) {
+        XP += xp;
+        if (XP >= getMaxXP()) {
+            int t = getMaxXP();
+            addLevel(XP / getMaxXP());
+            XP = XP % t;
+            return true;
+        }
+        return false;
     }
 
     public int getLevel() {
         return level;
     }
 
-    public void setLevel(int level) {
-        this.level = level;
+    public void addLevel(int level) {
+        this.level += level;
     }
 
     public User getUser() {
@@ -87,7 +103,23 @@ public class Player {
         weapon = new Weapon(weaponType);
         this.heroType = heroType;
         animation = Assets.getHeroAnimation(heroType, state, 0.1f);
-        this.speed = 100f;
+        this.speed = heroType.speed;
+    }
+
+    public void reload() {
+        state = State.IDLE;
+        animation = Assets.getHeroAnimation(heroType, state, 0.1f);
+        weapon.reload();
+    }
+
+    public Player(User user, int health, Heros heroType, Weapon weapon, Vector pos) {
+        this.user = user;
+        this.health = health;
+        this.pos = pos.copy();
+        this.weapon = weapon;
+        this.heroType = heroType;
+        animation = Assets.getHeroAnimation(heroType, state, 0.1f);
+        this.speed = heroType.speed;
     }
 
     public int getHealth() {
@@ -104,7 +136,7 @@ public class Player {
 
     public void update(float delta) {
         stateTime += delta;
-        abilities.removeIf(ability -> ability.isDead());
+        abilities.removeIf(Ability::isDead);
     }
 
     public void setState(State state) {
@@ -168,11 +200,34 @@ public class Player {
     }
 
     private float lastHit = -1;
-    public final static float BETWEEN_HIT = 5f;
+    public final static float BETWEEN_HIT = 1f;
 
     public void damage(Game game, int damage) {
         if (game.timePassed - lastHit <= BETWEEN_HIT) return;
         lastHit = game.timePassed;
         health -= damage;
+    }
+
+    public void handleKilling() {
+        increaseKill(1);
+    }
+
+    private void increaseKill(int amount) {
+        kills += amount;
+    }
+
+    public void onExit(float passedTime) {
+        user.increaseKills(kills);
+        user.setLongestTime((int) passedTime);
+        user.increaseScore(getScore());
+        user.update();
+    }
+
+    public int getScore() {
+        return level * 10 + kills;
+    }
+
+    public void increaseHealth(int amount) {
+        health += amount;
     }
 }

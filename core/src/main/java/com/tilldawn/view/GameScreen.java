@@ -54,7 +54,7 @@ public class GameScreen implements Screen {
         table.setFillParent(true);
         hudStage.addActor(table);
 
-        xpBar = new ProgressBar(0, 100, 1, false, skin);
+        xpBar = new ProgressBar(0, controller.getMaxXP(), 1, false, skin);
 
         levelLabel = new Label("", skin);
         ammoLabel = new Label("", skin);
@@ -107,6 +107,7 @@ public class GameScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        batch.setShader(game.getShader());
         batch.setTransformMatrix(transform);
         batch.begin();
         drawLoopingBackground(player.getX(), player.getY(), viewportWidth, viewportHeight);

@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.tilldawn.Main;
 import com.tilldawn.model.Assets;
+import com.tilldawn.model.game.Game;
 import com.tilldawn.model.game.GameSettings;
 import com.tilldawn.model.game.WeaponType;
 import com.tilldawn.model.language.menus.LoginMenuCommands;
@@ -67,9 +68,11 @@ public class PreGameScreen implements Screen {
         Heros hero = heros.getSelected();
         int timer = time.getSelected();
         WeaponType weaponType = weapon.getSelected();
-
-        GameSettings settings = new GameSettings(timer, weaponType, hero);
-        com.tilldawn.model.game.Game newGame = new com.tilldawn.model.game.Game(Main.getUser(), settings);
+        GameSettings settings = Main.getInstance().settings;
+        settings.totalTime = 60 * timer;
+        settings.heroType = hero;
+        settings.weaponType = weaponType;
+        Game newGame = new Game(Main.getUser(), settings);
         game.setGame(newGame);
         game.setScreen(new GameScreen());
     }

@@ -6,14 +6,22 @@ import com.badlogic.gdx.math.Rectangle;
 import com.tilldawn.model.Vector;
 import com.tilldawn.model.texture.Textures;
 
-public class Point {
-    private Vector pos;
-    private float width = 30, height = 30;
-    public final Texture texture = Textures.SOFT.getTexture();
-    public boolean isDead = false;
+import java.io.Serializable;
 
-    public Point(Vector pos) {
+public class Point implements Serializable {
+    private Vector pos;
+    private float width = 15, height = 15;
+    public transient Texture texture = Textures.SOFT.getTexture();
+    public boolean isDead = false;
+    public final int XP;
+
+    public Point(Vector pos, int xp) {
         this.pos = pos.copy();
+        XP = xp;
+    }
+
+    public void reload() {
+        texture = Textures.SOFT.getTexture();
     }
 
     public float getX() {

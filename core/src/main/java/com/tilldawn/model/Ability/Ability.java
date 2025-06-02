@@ -3,7 +3,9 @@ package com.tilldawn.model.Ability;
 import com.tilldawn.model.game.Game;
 import com.tilldawn.model.game.Player;
 
-public class Ability {
+import java.io.Serializable;
+
+public class Ability implements Serializable {
     public Command command;
     public float activatedTime;
     public float duration;

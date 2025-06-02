@@ -7,7 +7,7 @@ public class VitalityCommand implements Command {
     @Override
     public void execute(Game game) {
         Player player = game.getPlayer();
-        player.setHealth(player.getHealth() + 1);
+        player.setHealth(player.getHealth() + 10);
     }
 
     @Override

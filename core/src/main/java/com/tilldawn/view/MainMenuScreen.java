@@ -54,6 +54,7 @@ public class MainMenuScreen implements Screen {
         TextButton settingsButton = new TextButton("Settings", skin);
         TextButton logoutButton = new TextButton("Logout", skin);
 
+        table.add(Assets.getImageAvatar(game.getUser())).size(128, 128).padBottom(20).center().row();
         table.add(newGameButton).width(300).height(60).padBottom(15).row();
         table.add(continueGame).width(300).height(60).padBottom(15).row();
         table.add(talentButton).width(300).height(60).padBottom(15).row();
@@ -84,7 +85,7 @@ public class MainMenuScreen implements Screen {
         continueGame.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (Main.getGame() == null || Main.getGame().getPlayer().getUser() != Main.getUser()) {
+                if (Main.getGame() == null) {
                     showMessage("You don't have any game!", Color.RED);
                 }
                 else

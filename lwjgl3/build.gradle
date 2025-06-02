@@ -44,6 +44,17 @@ run {
   //setIgnoreExitValue(true)
 
   if (os.contains('mac')) jvmArgs += "-XstartOnFirstThread"
+  jvmArgs += [
+    '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
+    '--add-opens', 'java.base/java.lang.reflect=ALL-UNNAMED',
+    '--add-opens', 'java.base/java.io=ALL-UNNAMED',
+    '--add-opens', 'java.base/java.util=ALL-UNNAMED',
+    '--add-opens', 'java.base/java.nio=ALL-UNNAMED',
+    '--add-opens', 'java.base/sun.nio.cs=ALL-UNNAMED',
+    '--add-opens', 'java.base/java.nio.charset=ALL-UNNAMED',
+    '--add-opens', 'java.base/jdk.internal.ref=ALL-UNNAMED',
+    '--add-opens', 'java.base/java.lang.ref=ALL-UNNAMED',
+  ]
 }
 
 jar {
