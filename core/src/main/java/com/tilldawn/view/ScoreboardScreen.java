@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.tilldawn.Main;
 import com.tilldawn.model.Assets;
+import com.tilldawn.model.language.menus.MenuCommands;
 import com.tilldawn.model.user.User;
 import com.tilldawn.model.user.UserRepository;
 
@@ -36,10 +37,10 @@ public class ScoreboardScreen implements Screen {
         table.setFillParent(true);
         stage.addActor(table);
 
-        TextButton sortByName = new TextButton("Name", skin);
-        TextButton sortByTime = new TextButton("Time", skin);
-        TextButton sortByKills = new TextButton("Kills", skin);
-        TextButton sortByScore = new TextButton("Score", skin);
+        TextButton sortByName = new TextButton(MenuCommands.NAME.get(Main.getInstance().lang), skin);
+        TextButton sortByTime = new TextButton(MenuCommands.TIME.get(Main.getInstance().lang), skin);
+        TextButton sortByKills = new TextButton(MenuCommands.KILLS.get(Main.getInstance().lang), skin);
+        TextButton sortByScore = new TextButton(MenuCommands.SCORE.get(Main.getInstance().lang), skin);
 
         Table buttonRow = new Table();
         buttonRow.add(sortByName).pad(5);

@@ -3,32 +3,36 @@ package com.tilldawn.model.language.menus;
 import com.tilldawn.model.language.Lang;
 import com.tilldawn.model.language.Message;
 
+import com.tilldawn.model.language.Lang;
+import com.tilldawn.model.language.Message;
+
 public enum RegisterMenuCommands implements Message {
-    LOGIN("Login"),
-    REGISTER("Register"),
-    FORGET_PASS("Forget"),
-    USERNAME("Username"),
-    PASSWORD("Password"),
-    NEW_PASSWORD(),
-    REPEAT_PASSWORD(""),
-    SECURITY_QUESTION(""),
-    SECURITY_ANSWER(""),
-    REGISTER_SUCCESS,
-    SUBMIT(),
-    ;
+    LOGIN("Login", "vorood"),
+    REGISTER("Register", "sabtenam"),
+    FORGET_PASS("Forget Password", "faramooshi ramz"),
+    USERNAME("Username", "nam karybari"),
+    PASSWORD("Password", "ramz"),
+    NEW_PASSWORD("New Password", "ramz jadid"),
+    REPEAT_PASSWORD("Repeat Password", "tekrare ramz"),
+    SECURITY_QUESTION("Security Question", "soale amniyati"),
+    SECURITY_ANSWER("Security Answer", "pasokhe amniyati"),
+    REGISTER_SUCCESS("Register Success", "sabtenam movafagh"),
+    SUBMIT("Submit", "ersal");
 
-    String eng;
+    private final String eng;
+    private final String persian;
 
-    RegisterMenuCommands() {
-        eng = this.name();
+    RegisterMenuCommands(String eng, String persian) {
+        this.eng = eng;
+        this.persian = persian;
     }
 
-    RegisterMenuCommands(String string) {
-        eng = string;
-        eng = this.name();
-    }
-
+    @Override
     public String get(Lang lang) {
-        return eng;
+        return switch (lang) {
+            case ENG -> eng;
+            case PERSIAN -> persian;
+        };
     }
 }
+

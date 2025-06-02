@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.tilldawn.Main;
 import com.tilldawn.model.Assets;
 import com.tilldawn.model.game.Player;
+import com.tilldawn.model.language.menus.MenuCommands;
 import com.tilldawn.model.user.User;
 
 public class EndGameScreen implements Screen {
@@ -65,9 +66,9 @@ public class EndGameScreen implements Screen {
 
     private String getResultText() {
         switch (result) {
-            case WIN: return "You Win!";
-            case DEAD: return "You Died!";
-            case GAVE_UP: return "You Gave Up!";
+            case WIN: return MenuCommands.YOU_WIN.get(Main.getInstance().lang);
+            case DEAD: return MenuCommands.YOU_DIED.get(Main.getInstance().lang);
+            case GAVE_UP: return MenuCommands.YOU_GAVE_UP.get(Main.getInstance().lang);
             default: return "Game Over";
         }
     }

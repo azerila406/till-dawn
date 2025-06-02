@@ -2,6 +2,7 @@ package com.tilldawn.model;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Scaling;
+import com.tilldawn.Main;
 import com.tilldawn.model.enemy.EnemyType;
 import com.tilldawn.model.game.State;
 import com.tilldawn.model.game.WeaponType;
@@ -18,9 +20,7 @@ import com.tilldawn.model.texture.Heros;
 import com.tilldawn.model.texture.Textures;
 import com.tilldawn.model.user.User;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Assets {
     private static final AssetManager manager = new AssetManager();
@@ -35,7 +35,30 @@ public class Assets {
 
     private Assets() {}
 
+    private static Music music;
+    private static Map<String, Music> musicTracks = new HashMap<>();
+
+
+    public static void switchToTrack(String trackName) {
+        if (music != null) music.stop();
+        music = musicTracks.get(trackName);
+        if (Main.getInstance().settings.isMusicEnabled) {
+            music.setLooping(true);
+            music.setVolume(Main.getInstance().settings.musicVolume);
+            music.play();
+        }
+    }
+
+    public static Music getMusic() {
+        return music;
+    }
+
     public static void load() {
+        musicTracks.put("Track 1", Gdx.audio.newMusic(Gdx.files.internal("music/track1.mp3")));
+        musicTracks.put("Track 2", Gdx.audio.newMusic(Gdx.files.internal("music/track2.mp3")));
+        musicTracks.put("Track 3", Gdx.audio.newMusic(Gdx.files.internal("music/track3.mp3")));
+
+        manager.load("menu.png", Texture.class);
         manager.load("pixthulhu-ui.json", Skin.class);
         manager.load("background.png", Texture.class);
         for (GameSound gameSound: GameSound.values())
@@ -61,6 +84,10 @@ public class Assets {
 
     public static Texture getBackground() {
         return manager.get("background.png", Texture.class);
+    }
+
+    public static Texture getMenuBackground() {
+        return manager.get("menu.png", Texture.class);
     }
 
     public static <T> T get(String path, Class<T> type) {

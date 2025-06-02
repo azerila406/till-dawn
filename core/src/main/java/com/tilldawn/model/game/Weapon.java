@@ -3,7 +3,9 @@ package com.tilldawn.model.game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.tilldawn.Main;
 import com.tilldawn.model.Vector;
+import com.tilldawn.model.sounds.GameSound;
 import com.tilldawn.model.texture.Textures;
 
 import java.io.Serializable;
@@ -75,7 +77,7 @@ public class Weapon implements Serializable {
 
     public void reload(float time) {
         updateReload(time);
-        if (maxAmmo == ammo || isReloading) return;
+        if (ammo != 0 || maxAmmo == ammo || isReloading) return;
         isReloading = true;
         timeOfReload = time;
         ammo = maxAmmo;
@@ -84,6 +86,9 @@ public class Weapon implements Serializable {
     public void updateReload(float time) {
         if (isReloading && time - timeOfReload > reloadTime) {
             isReloading = false;
+            if (Main.getInstance().settings.sfx) {
+                GameSound.GUN_COCK.play(1f);
+            }
         }
     }
 
@@ -100,6 +105,11 @@ public class Weapon implements Serializable {
     public List<Bullet> shoot(float time, Vector direction, Player player) {
         updateReload(time);
         if (isReloading || ammo == 0) return null;
+
+        if (Main.getInstance().settings.sfx) {
+            GameSound.GUNSHOT.play(1f);
+        }
+
         Vector bulletVector = getBulletSpawnPosition(direction, player);
         --ammo;
 

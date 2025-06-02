@@ -22,11 +22,10 @@ public class PreGameScreen implements Screen {
     private SelectBox<Heros> heros;
     private SelectBox<Integer> time;
     private SelectBox<WeaponType> weapon;
-    private Skin skin;
+    private Skin skin = Assets.getSkin();
     private Button startButton;
 
     public PreGameScreen() {
-        skin = Assets.getSkin();
         fillSelects();
         createUI();
         createBack();

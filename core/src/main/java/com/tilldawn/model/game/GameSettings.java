@@ -9,6 +9,9 @@ public class GameSettings implements Serializable {
     public WeaponType weaponType;
     public Heros heroType;
     public boolean autoReload = false;
+    public boolean sfx = true;
+    public float musicVolume = 1f;
+    public boolean isMusicEnabled = true;
 
     public GameSettings() {
     }

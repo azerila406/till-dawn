@@ -6,15 +6,16 @@ import com.tilldawn.model.Assets;
 import com.tilldawn.model.user.UserRepository;
 
 public enum GameSound {
-    CLICK("sound-effects/click.wav"),
-
+    CLICK("click.wav"),
+    GUN_COCK("gun-cock.wav"),
+    GUNSHOT("gunshot.wav"),
     ;
 
     private final String path;
     private Sound sound;
 
     GameSound(String path) {
-        this.path = path;
+        this.path = "sound-effects/" + path;
     }
 
     public String getPath() {

@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.tilldawn.Main;
 import com.tilldawn.model.Assets;
+import com.tilldawn.model.language.menus.MenuCommands;
 import com.tilldawn.model.user.UserRepository;
 
 public class ProfileScreen implements Screen {
@@ -26,10 +27,10 @@ public class ProfileScreen implements Screen {
         table.setFillParent(true);
         stage.addActor(table);
 
-        TextButton changeAvatarButton = new TextButton("Change Avatar", skin);
-        TextButton changePasswordButton = new TextButton("Change Password", skin);
-        TextButton changeUsernameButton = new TextButton("Change Username", skin);
-        TextButton deleteAccountButton = new TextButton("Delete Account", skin);
+        TextButton changeAvatarButton = new TextButton(MenuCommands.CHANGE_AVATAR.get(Main.getInstance().lang), skin);
+        TextButton changePasswordButton = new TextButton(MenuCommands.CHANGE_PASSWORD.get(Main.getInstance().lang), skin);
+        TextButton changeUsernameButton = new TextButton(MenuCommands.CHANGE_USERNAME.get(Main.getInstance().lang), skin);
+        TextButton deleteAccountButton = new TextButton(MenuCommands.DELETE_ACCOUNT.get(Main.getInstance().lang), skin);
 
         changeAvatarButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {

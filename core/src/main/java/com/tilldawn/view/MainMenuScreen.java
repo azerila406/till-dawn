@@ -4,13 +4,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.tilldawn.Main;
 import com.tilldawn.model.Assets;
+import com.tilldawn.model.language.menus.MenuCommands;
 import com.tilldawn.model.sounds.GameSound;
 import com.tilldawn.model.user.User;
 
@@ -29,6 +33,11 @@ public class MainMenuScreen implements Screen {
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
+        Texture backgroundTexture = Assets.getMenuBackground();
+        Image backgroundImage = new Image(new TextureRegionDrawable(new TextureRegion(backgroundTexture)));
+        backgroundImage.setFillParent(true);
+        stage.addActor(backgroundImage);
+
         Skin skin = Assets.getSkin();
         User user = game.getUser();
 
@@ -38,7 +47,7 @@ public class MainMenuScreen implements Screen {
         stage.addActor(table);
 
         Label userLabel = new Label("Player: " + user.getUsername(), skin);
-        Label scoreLabel = new Label("Score: " + user.getScore(), skin);
+        Label scoreLabel = new Label(MenuCommands.SCORE.get(Main.getInstance().lang) + user.getScore(), skin);
 
         Table userInfoTable = new Table();
         userInfoTable.add(userLabel).left().padBottom(5).row();
@@ -46,13 +55,13 @@ public class MainMenuScreen implements Screen {
 
         table.add(userInfoTable).colspan(2).padBottom(30).row();
 
-        TextButton newGameButton = new TextButton("New", skin);
-        TextButton continueGame = new TextButton("Continue", skin);
-        TextButton talentButton = new TextButton("Talent", skin);
-        TextButton scoreboardButton = new TextButton("Scoreboard", skin);
-        TextButton profileButton = new TextButton("Profile", skin);
-        TextButton settingsButton = new TextButton("Settings", skin);
-        TextButton logoutButton = new TextButton("Logout", skin);
+        TextButton newGameButton = new TextButton(MenuCommands.NEW.get(Main.getInstance().lang), skin);
+        TextButton continueGame = new TextButton(MenuCommands.CONTINUEE.get(Main.getInstance().lang), skin);
+        TextButton talentButton = new TextButton(MenuCommands.HINT.get(Main.getInstance().lang), skin);
+        TextButton scoreboardButton = new TextButton(MenuCommands.SCOREBOARD.get(Main.getInstance().lang), skin);
+        TextButton profileButton = new TextButton(MenuCommands.PROFILE.get(Main.getInstance().lang), skin);
+        TextButton settingsButton = new TextButton(MenuCommands.SETTINGS.get(Main.getInstance().lang), skin);
+        TextButton logoutButton = new TextButton(MenuCommands.LOGOUT.get(Main.getInstance().lang), skin);
 
         table.add(Assets.getImageAvatar(game.getUser())).size(128, 128).padBottom(20).center().row();
         table.add(newGameButton).width(300).height(60).padBottom(15).row();

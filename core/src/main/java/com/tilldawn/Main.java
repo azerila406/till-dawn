@@ -30,6 +30,7 @@ public class Main extends Game {
     private User user;
     private com.tilldawn.model.game.Game game;
     public final MouseController mouseController;
+    public Lang lang = Lang.PERSIAN;
 
     public Main(MouseController mouseController) {
         super();
@@ -42,7 +43,11 @@ public class Main extends Game {
     }
 
     public Lang getLang() {
-        return Lang.ENG;
+        return lang;
+    }
+
+    public void setLang(Lang lang) {
+        this.lang = lang;
     }
 
     public static User getUser() {
@@ -57,6 +62,7 @@ public class Main extends Game {
     }
 
     public void tryLoadGame() {
+        if (user == null) return;
         final String filepath = user.getUsername() + ".ser";
         System.err.println(filepath);
 
@@ -78,8 +84,7 @@ public class Main extends Game {
     public void create() {
         Assets.load();
         Assets.finishLoading();
-        setUser(UserRepository.getInstance().getByUsername("GUEST"));
-        setScreen(new MainMenuScreen());
+        setScreen(new PreScreen());
     }
 
     @Override
@@ -106,5 +111,18 @@ public class Main extends Game {
         }
         else
             shader = null;
+    }
+
+    public void setGray(boolean gray) {
+        if (gray) {
+            shader = Assets.getShaderProgram();
+        }
+        else
+            shader = null;
+    }
+
+    public void goToMain() {
+        if (user == null) setScreen(new PreScreen());
+        else setScreen(new MainMenuScreen());
     }
 }

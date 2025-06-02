@@ -7,9 +7,11 @@ import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.tilldawn.Main;
 import com.tilldawn.controller.GameController;
 import com.tilldawn.model.Ability.AbilityType;
 import com.tilldawn.model.Assets;
+import com.tilldawn.model.language.menus.MenuCommands;
 
 import java.util.*;
 import java.util.List;
@@ -37,7 +39,7 @@ public class NewLevelScreen implements Screen {
         table.setFillParent(true);
         table.center();
 
-        Label title = new Label("Choose Your Ability", skin);
+        Label title = new Label(MenuCommands.CHOOSE_YOUR_ABILITY.get(Main.getInstance().lang), skin);
         table.add(title).colspan(3).padBottom(20).row();
 
         chosenAbilities = pickThreeAbilities();

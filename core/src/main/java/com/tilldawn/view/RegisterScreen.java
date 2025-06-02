@@ -3,12 +3,16 @@ package com.tilldawn.view;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.tilldawn.Main;
 import com.tilldawn.controller.RegisterController;
+import com.tilldawn.model.language.Lang;
 import com.tilldawn.model.language.menus.LoginMenuCommands;
 import com.tilldawn.model.Assets;
 import com.tilldawn.model.language.Result;
@@ -34,6 +38,11 @@ public class RegisterScreen implements Screen {
     private void createUI() {
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
+
+        Texture backgroundTexture = Assets.getMenuBackground();
+        Image backgroundImage = new Image(new TextureRegionDrawable(new TextureRegion(backgroundTexture)));
+        backgroundImage.setFillParent(true);
+        stage.addActor(backgroundImage);
 
         Skin skin = Assets.getSkin();
 

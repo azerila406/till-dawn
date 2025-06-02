@@ -13,6 +13,7 @@ import com.tilldawn.Main;
 import com.tilldawn.controller.RegisterController;
 import com.tilldawn.model.Assets;
 import com.tilldawn.model.language.error.MenuErrors;
+import com.tilldawn.model.language.menus.MenuCommands;
 import com.tilldawn.model.user.UserRepository;
 
 public class ChangeUserScreen implements Screen {
@@ -31,12 +32,12 @@ public class ChangeUserScreen implements Screen {
         table.setFillParent(true);
         stage.addActor(table);
 
-        Label usernameLabel = new Label("New Username:", skin);
+        Label usernameLabel = new Label(MenuCommands.NEW_USERNAME.get(Main.getInstance().lang), skin);
         usernameField = new TextField("", skin);
         usernameField.setPasswordCharacter('*');
         usernameField.setPasswordMode(true);
 
-        submitButton = new TextButton("Change", skin);
+        submitButton = new TextButton(MenuCommands.CHANGE.get(Main.getInstance().lang), skin);
         infoLabel = new Label("", skin);
         infoLabel.setColor(Color.RED);
 
